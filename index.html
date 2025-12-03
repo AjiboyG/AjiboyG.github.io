@@ -434,6 +434,47 @@
                 });
             });
 
+            // --- NEW: AJAX FORM SUBMISSION HANDLER ---
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault(); // Prevents redirect to Google Script URL
+                    
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+
+                    try {
+                        // Send data to Apps Script in background
+                        await fetch(contactForm.action, {
+                            method: 'POST',
+                            body: new FormData(contactForm),
+                            mode: 'no-cors' // Required for Google Apps Script
+                        });
+
+                        // On Success: Switch to Success Message UI
+                        contactForm.classList.add('hidden');
+                        successMessage.classList.remove('hidden');
+                        
+                        // Manually set WhatsApp link for the AJAX flow
+                        const message = encodeURIComponent("Hello Riel Innovations, I just submitted a contact form on your website and would like to get a quick quote now.");
+                        const number = "08133413510"; 
+                        whatsappLink.href = `https://wa.me/${number}?text=${message}`;
+
+                        // Optional: Scroll to success message
+                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    } catch (error) {
+                        console.error('Submission Error:', error);
+                        alert('There was a problem sending your message. Please try again.');
+                    } finally {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // --- Handle URL Params (Fallback/Legacy) ---
             const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
             const isSuccess = urlParams.get('success') === 'true';
             const whatsappNumber = urlParams.get('whatsapp');
