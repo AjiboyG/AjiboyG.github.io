@@ -17,44 +17,16 @@
         .border-primary { border-color: #0b4f6c; }
         
         /* --- MODERN SCROLL ANIMATIONS --- */
-        
-        /* Base state for all animated elements */
         [data-animate] {
             opacity: 0;
-            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); /* "Spring" ease */
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: opacity, transform, filter;
         }
-
-        /* 1. Fade Up with Scale & Blur (Cards, Text) */
-        [data-animate="fadeInUp"] {
-            transform: translateY(60px) scale(0.95);
-            filter: blur(10px);
-        }
-
-        /* 2. Slide In Left (Headings) */
-        [data-animate="slideInLeft"] {
-            transform: translateX(-100px);
-            filter: blur(5px);
-        }
-
-        /* 3. Slide In Right (Subtext) */
-        [data-animate="slideInRight"] {
-            transform: translateX(100px);
-            filter: blur(5px);
-        }
-
-        /* 4. Zoom In (Hero Image/Backgrounds) */
-        [data-animate="zoomIn"] {
-            transform: scale(0.8);
-            filter: blur(5px);
-        }
-
-        /* --- ACTIVE STATE (Triggered by JS) --- */
-        [data-animate].animate-active {
-            opacity: 1;
-            transform: translate(0) scale(1);
-            filter: blur(0);
-        }
+        [data-animate="fadeInUp"] { transform: translateY(60px) scale(0.95); filter: blur(10px); }
+        [data-animate="slideInLeft"] { transform: translateX(-100px); filter: blur(5px); }
+        [data-animate="slideInRight"] { transform: translateX(100px); filter: blur(5px); }
+        [data-animate="zoomIn"] { transform: scale(0.8); filter: blur(5px); }
+        [data-animate].animate-active { opacity: 1; transform: translate(0) scale(1); filter: blur(0); }
 
         /* Preloader CSS */
         #preloader {
@@ -75,10 +47,21 @@
 
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- LOGO SECTION -->
             <a href="#home" class="flex items-center space-x-2 transition duration-300 hover:opacity-80">
-                <!-- Header Logo -->
-                <img src="https://placehold.co/150x40/0b4f6c/ffffff?text=RIEL+LOGO" alt="Riel Innovations Logo" class="h-8 sm:h-10" onerror="this.onerror=null;this.style.display='none';document.getElementById('text-logo').style.display='block';">
-                <span id="text-logo" class="text-2xl font-extrabold text-primary" style="display:none;">Riel Innovations</span>
+                <!-- 
+                   UPDATED: Using direct Imgur link for the logo.
+                -->
+                <img 
+                    id="header-logo"
+                    src="https://i.imgur.com/yMr6G5R.png" 
+                    alt="Riel Innovations Logo" 
+                    class="h-12 w-auto" 
+                    fetchpriority="high"
+                    loading="eager"
+                    onerror="this.style.display='none';"
+                >
+                <span class="text-2xl font-extrabold text-primary">Riel Innovations</span>
             </a>
             
             <nav class="hidden md:flex space-x-8">
@@ -143,7 +126,7 @@
             </div>
         </section>
 
-        <!-- About Section with Grid Stagger -->
+        <!-- About Section -->
         <section id="about" class="py-20 md:py-32 bg-gray-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
@@ -252,9 +235,10 @@
                         <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
                         <p class="text-gray-700 italic mb-6">"Riel Innovations completely transformed our outdated website into a lead-generating machine. The entire process was professional, timely, and highly communicative. True experts."</p>
                         <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=J.D." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <!-- Chinedu Okeke -->
+                            <img src="https://media.istockphoto.com/id/517302398/photo/portrait-of-nigerian-man-with-beard-looking-at-camera.jpg?s=612x612&w=0&k=20&c=BC5pdsmTWzmFO3mIlA7TQAIECnJ7Kpd-daL6G4RJqT4=" alt="Chinedu Okeke" class="w-12 h-12 rounded-full mr-4 border-2 border-primary object-cover object-center">
                             <div>
-                                <p class="font-bold text-gray-900">John Doe</p>
+                                <p class="font-bold text-gray-900">Chinedu Okeke</p>
                                 <p class="text-sm text-gray-500">CEO, Apex Solutions (E-commerce)</p>
                             </div>
                         </div>
@@ -265,7 +249,8 @@
                         <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
                         <p class="text-gray-700 italic mb-6">"The Ifanidigi platform is beautiful and technically flawless. They captured the spirit of our vision and delivered a fast, reliable, and engaging cultural resource."</p>
                         <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=T.A." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <!-- Tolu Adekunle (Updated Image) -->
+                            <img src="https://cdn.pixabay.com/photo/2020/01/20/17/30/look-4780865_640.jpg" alt="Tolu Adekunle" class="w-12 h-12 rounded-full mr-4 border-2 border-primary object-cover object-center">
                             <div>
                                 <p class="font-bold text-gray-900">Tolu Adekunle</p>
                                 <p class="text-sm text-gray-500">Founder, Ifanidigi</p>
@@ -278,9 +263,10 @@
                         <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
                         <p class="text-gray-700 italic mb-6">"Our new service site is structured perfectly. The booking flow is seamless, and we've already seen a huge drop in client confusion. Highly recommend their strategic design."</p>
                         <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=S.K." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <!-- Amina Yusuf -->
+                            <img src="https://images.unsplash.com/photo-1602342323893-b11f757957c9?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmlnZXJpYW58ZW58MHx8MHx8fDA%3D" alt="Amina Yusuf" class="w-12 h-12 rounded-full mr-4 border-2 border-primary object-cover">
                             <div>
-                                <p class="font-bold text-gray-900">Sarah K.</p>
+                                <p class="font-bold text-gray-900">Amina Yusuf</p>
                                 <p class="text-sm text-gray-500">Project Manager, Riel Writing Services</p>
                             </div>
                         </div>
@@ -392,9 +378,11 @@
             if (data.linkedin_url) document.getElementById('linkedin-link').href = ensureAbsoluteUrl(data.linkedin_url);
             if (data.instagram_url) document.getElementById('instagram-link').href = ensureAbsoluteUrl(data.instagram_url);
             
-            // Logo
-            const logoImg = document.querySelector('header img');
-            if (data.logo_url) logoImg.src = data.logo_url;
+            // Logo - Only replace src if value exists
+            // REMOVED DYNAMIC FETCH SO SVG LOADS INSTANTLY
+            // if (data.logo_url) {
+            //    document.getElementById('header-logo').src = data.logo_url;
+            // }
         }
 
         async function fetchDynamicData() {
