@@ -10,112 +10,75 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <style>
-        /* Custom styles for smooth scrolling and general typography */
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fb; /* Very light background */
-            color: #1a202c; /* Dark text */
-        }
-        /* Custom dark primary color: a deep, professional blue-teal */
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; color: #1a202c; overflow-x: hidden; }
         .bg-primary { background-color: #0b4f6c; }
         .text-primary { color: #0b4f6c; }
         .border-primary { border-color: #0b4f6c; }
         
-        /* Subtle animation classes */
-        .animate-fadeInUp {
-            animation: fadeInUp 0.7s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        /* New class for left slide-in */
-        .animate-slideInLeft {
-            animation: slideInLeft 0.7s ease-out forwards;
-            opacity: 0;
-            transform: translateX(-50px);
-        }
-        /* New class for right slide-in */
-        .animate-slideInRight {
-            animation: slideInRight 0.7s ease-out forwards;
-            opacity: 0;
-            transform: translateX(50px);
-        }
+        /* --- MODERN SCROLL ANIMATIONS --- */
         
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Base state for all animated elements */
+        [data-animate] {
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); /* "Spring" ease */
+            will-change: opacity, transform, filter;
         }
-        @keyframes slideInLeft {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+
+        /* 1. Fade Up with Scale & Blur (Cards, Text) */
+        [data-animate="fadeInUp"] {
+            transform: translateY(60px) scale(0.95);
+            filter: blur(10px);
         }
-        @keyframes slideInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+
+        /* 2. Slide In Left (Headings) */
+        [data-animate="slideInLeft"] {
+            transform: translateX(-100px);
+            filter: blur(5px);
+        }
+
+        /* 3. Slide In Right (Subtext) */
+        [data-animate="slideInRight"] {
+            transform: translateX(100px);
+            filter: blur(5px);
+        }
+
+        /* 4. Zoom In (Hero Image/Backgrounds) */
+        [data-animate="zoomIn"] {
+            transform: scale(0.8);
+            filter: blur(5px);
+        }
+
+        /* --- ACTIVE STATE (Triggered by JS) --- */
+        [data-animate].animate-active {
+            opacity: 1;
+            transform: translate(0) scale(1);
+            filter: blur(0);
         }
 
         /* Preloader CSS */
         #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f7f9fb;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f7f9fb;
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
             transition: opacity 0.5s ease-out;
         }
         .spinner {
-            border: 6px solid rgba(11, 79, 108, 0.2);
-            border-top: 6px solid #0b4f6c;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
+            border: 6px solid rgba(11, 79, 108, 0.2); border-top: 6px solid #0b4f6c;
+            border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Ensure Imgur embed fills its container */
-        /* Removed .imgur-embed-container styles */
-        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
+    <div id="preloader"><div class="spinner"></div></div>
 
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- LOGO: Clickable and links to home (#home) -->
             <a href="#home" class="flex items-center space-x-2 transition duration-300 hover:opacity-80">
-                <!-- Placeholder for the actual logo image -->
-                <img 
-                    src="https://placehold.co/150x40/0b4f6c/ffffff?text=RIEL+LOGO" 
-                    alt="Riel Innovations Logo" 
-                    class="h-8 sm:h-10" 
-                    onerror="this.onerror=null;this.style.display='none';document.getElementById('text-logo').style.display='block';"
-                >
-                <!-- Text fallback in case the logo image fails to load -->
-                <span id="text-logo" class="text-2xl font-extrabold text-primary" style="display:none;">
-                    Riel Innovations
-                </span>
+                <!-- Header Logo -->
+                <img src="https://placehold.co/150x40/0b4f6c/ffffff?text=RIEL+LOGO" alt="Riel Innovations Logo" class="h-8 sm:h-10" onerror="this.onerror=null;this.style.display='none';document.getElementById('text-logo').style.display='block';">
+                <span id="text-logo" class="text-2xl font-extrabold text-primary" style="display:none;">Riel Innovations</span>
             </a>
             
             <nav class="hidden md:flex space-x-8">
@@ -126,9 +89,7 @@
                 <a href="#contact" class="nav-link text-white bg-primary px-4 py-2 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 transform hover:-translate-y-px hover:-shadow-lg">Contact Us</a>
             </nav>
 
-            <button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
+            <button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
         </div>
 
         <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg pb-4">
@@ -143,439 +104,251 @@
     </header>
 
     <main>
-        <!-- 1. Hero Section -->
         <section id="home" class="h-screen flex items-center bg-gray-50/50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-                <p class="text-xl text-primary font-semibold mb-4 animate-fadeInUp" style="animation-delay: 0.1s;">
-                    Strategy. Design. Development.
-                </p>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-6 animate-fadeInUp" style="animation-delay: 0.3s;">
-                    We Build <span class="text-primary">Websites</span> <br class="hidden sm:inline"> That Work.
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 animate-fadeInUp" style="animation-delay: 0.5s;">
-                    Your digital presence is your most valuable asset. At Riel Innovations, **Innovation Meets Functionality** to deliver stunning, high-performing web solutions tailored to your success.
-                </p>
-                <a href="#contact" class="inline-block bg-primary text-white font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:shadow-2xl hover:bg-gray-800 transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40 animate-fadeInUp" style="animation-delay: 0.7s;">
-                    Start Your Project Today
-                </a>
+                <p class="text-xl text-primary font-semibold mb-4" data-animate="slideInLeft" style="transition-delay: 100ms;">Strategy. Design. Development.</p>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-6" data-animate="zoomIn" style="transition-delay: 200ms;">We Build <span class="text-primary">Websites</span> <br class="hidden sm:inline"> That Work.</h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10" data-animate="fadeInUp" style="transition-delay: 400ms;">Your digital presence is your most valuable asset. At Riel Innovations, <span class="font-bold text-gray-900">Innovation Meets Functionality</span>.</p>
+                <div data-animate="fadeInUp" style="transition-delay: 600ms;">
+                    <a href="#contact" class="inline-block bg-primary text-white font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:shadow-2xl hover:bg-gray-800 transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40">Start Your Project Today</a>
+                </div>
             </div>
         </section>
 
-        <!-- 2. Services Section -->
         <section id="services" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4 data-animate="slideInLeft">Our Expertise</h2>
-                <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16 data-animate="slideInRight">
-                    We offer a comprehensive suite of services to ensure your digital needs are fully met, from simple landing pages to complex e-commerce systems.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    <!-- Service 1: Personal Portfolio Websites -->
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary data-animate="fadeInUp">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16 stagger-container">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-user-tie text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Personal Portfolio Websites</h3>
-                        <p class="text-gray-600">Showcase your work, skills, and story with a custom, high-impact online portfolio that leaves a lasting professional impression on recruiters and clients.</p>
+                        <p class="text-gray-600">Showcase your work and story with a custom, high-impact online portfolio.</p>
                     </div>
-
-                    <!-- Service 2: Business/Corporate Websites -->
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary data-animate="fadeInUp">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-building text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Business/Corporate Websites</h3>
-                        <p class="text-gray-600">Establish authority and trust with a professional corporate website designed for lead generation, brand storytelling, and scalable growth.</p>
+                        <p class="text-gray-600">Establish authority with a professional corporate website designed for growth.</p>
                     </div>
-
-                    <!-- Service 3: Landing Pages -->
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary data-animate="fadeInUp">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-rocket text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">High-Converting Landing Pages</h3>
-                        <p class="text-gray-600">Drive campaign success with targeted, distraction-free landing pages optimized for a single goal: converting visitors into qualified leads or customers.</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Landing Pages</h3>
+                        <p class="text-gray-600">Drive campaign success with targeted, high-converting landing pages.</p>
                     </div>
-
-                    <!-- Service 4: E-commerce Websites -->
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary data-animate="fadeInUp">
+                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-shopping-cart text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
-                        <h3 class="text-xl font-bold mb-3 text-gray-800">Secure E-commerce Websites</h3>
-                        <p class="text-gray-600">Launch and scale your online store with secure, seamless, and user-friendly e-commerce platforms designed to maximize sales and customer retention.</p>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">E-commerce Websites</h3>
+                        <p class="text-gray-600">Launch your online store with secure, seamless platforms designed for sales.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Why Choose Us Section (About) -->
+        <!-- About Section with Grid Stagger -->
         <section id="about" class="py-20 md:py-32 bg-gray-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4 data-animate="slideInLeft">Why Choose Riel Innovations?</h2>
-                    <p class="text-xl text-gray-600 text-center mb-16 data-animate="slideInRight">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Why Choose Riel Innovations?</h2>
+                    <p class="text-xl text-gray-600 text-center mb-16" data-animate="slideInRight">
                         We don't just build sites; we build digital strategies. Our commitment to quality and client success is unmatched.
                     </p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Selling Point 1 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-container">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-bolt text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Performance First</h4>
-                            <p class="text-gray-600 text-sm">We focus on clean code and optimized assets for lightning-fast loading speeds and top-tier SEO rankings.</p>
+                            <p class="text-gray-600 text-sm">We focus on clean code and optimized assets for lightning-fast loading speeds.</p>
                         </div>
                     </div>
-                    <!-- Selling Point 2 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-mobile-alt text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Mobile-First Design</h4>
-                            <p class="text-gray-600 text-sm">Every project is built to look flawless and function perfectly on all devices, from small phones to large desktops.</p>
+                            <p class="text-gray-600 text-sm">Every project is built to look flawless and function perfectly on all devices.</p>
                         </div>
                     </div>
-                    <!-- Selling Point 3 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-lock text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Security & Reliability</h4>
-                            <p class="text-gray-600 text-sm">We ensure your website is built on robust, secure foundations, minimizing risk and downtime.</p>
+                            <p class="text-gray-600 text-sm">We ensure your website is built on robust, secure foundations.</p>
                         </div>
                     </div>
-                    <!-- Selling Point 4 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-chart-line text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Growth Focused</h4>
-                            <p class="text-gray-600 text-sm">Our websites are built with scalability in mind, ready to adapt and grow alongside your business.</p>
+                            <p class="text-gray-600 text-sm">Our websites are built with scalability in mind, ready to adapt alongside your business.</p>
                         </div>
                     </div>
-                    <!-- Selling Point 5 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-hands-helping text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Transparent Partnership</h4>
-                            <p class="text-gray-600 text-sm">We believe in open communication, providing you with visibility throughout the entire development process.</p>
+                            <p class="text-gray-600 text-sm">We believe in open communication throughout the entire development process.</p>
                         </div>
                     </div>
-                    <!-- Selling Point 6 -->
-                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4 data-animate="fadeInUp">
+                    <div class="p-6 bg-white rounded-xl shadow-lg flex items-start space-x-4" data-animate="fadeInUp">
                         <i class="fas fa-palette text-2xl text-primary mt-1"></i>
                         <div>
                             <h4 class="font-bold text-lg mb-1">Custom Aesthetics</h4>
-                            <p class="text-gray-600 text-sm">No templates here—every design is custom-crafted to reflect your unique brand identity and goals.</p>
+                            <p class="text-gray-600 text-sm">No templates here—every design is custom-crafted to reflect your brand.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 4. Portfolio Section -->
         <section id="portfolio" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4 data-animate="slideInLeft">Our Recent Work</h2>
-                <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16 data-animate="slideInRight">
-                    A glimpse into the diverse projects we've launched for businesses across various sectors.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Recent Work</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 stagger-container">
                     
-                    <!-- Project 1: E-commerce Website -->
-                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02] data-animate="fadeInUp">
-                        <!-- ID added for dynamic image update -->
+                    <!-- Project 1 -->
+                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-1" src="https://placehold.co/600x400/0B4F6C/ffffff?text=Premium+E-commerce" alt="E-commerce Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Retailer Online Store</h3>
-                            <p class="text-sm text-primary font-semibold mb-3">E-commerce / Online Retail</p>
-                            <p class="text-gray-600 text-sm">A custom-built, secure e-commerce platform designed for high traffic and conversion, featuring integrated inventory management.</p>
+                            <p class="text-sm text-primary font-semibold mb-3">E-commerce</p>
+                            <p class="text-gray-600 text-sm">A custom-built, secure e-commerce platform.</p>
                         </div>
                     </a>
 
-                    <!-- Project 2: Ifanidigi - Yoruba Traditions (RESTORED TO DYNAMIC IMAGE/LINK) -->
-                    <a href="https://ifanijigiproductions.tv/" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02] data-animate="fadeInUp">
-                        <!-- ID added for dynamic image update -->
+                    <!-- Project 2: IFANIDIGI -->
+                    <a href="https://ifanijigiproductions.tv/" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-2" src="https://placehold.co/600x400/2E86AB/ffffff?text=Ifanidigi+Culture" alt="Cultural Documentary Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Ifanidigi: Yoruba Heritage</h3>
-                            <p class="text-sm text-primary font-semibold mb-3">Cultural / Documentary Platform</p>
-                            <p class="text-gray-600 text-sm">Developed a rich media platform to promote Yoruba traditions, integrating video documentaries, archival text, and community forums.</p>
+                            <p class="text-sm text-primary font-semibold mb-3">Cultural Platform</p>
+                            <p class="text-gray-600 text-sm">Rich media platform promoting Yoruba traditions.</p>
                         </div>
                     </a>
                     
-                    <!-- Project 3: Riel Writing Services -->
-                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02] data-animate="fadeInUp">
-                        <!-- ID added for dynamic image update -->
+                    <!-- Project 3 -->
+                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-3" src="https://placehold.co/600x400/2F4F4F/ffffff?text=CV+Writing+Services" alt="Professional Writing Service Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Riel Writing Services</h3>
-                            <p class="text-sm text-primary font-semibold mb-3">Professional / Service Website</p>
-                            <p class="text-gray-600 text-sm">A professional, responsive website built for a CV and academic writing service, focusing on clear service offerings and easy client booking integration.</p>
+                            <p class="text-sm text-primary font-semibold mb-3">Professional Services</p>
+                            <p class="text-gray-600 text-sm">Responsive website for academic writing.</p>
                         </div>
-                    </a>
-                </div>
-                <div class="text-center mt-12">
-                    <a href="#contact" class="inline-block border border-primary text-primary font-bold py-3 px-8 rounded-xl text-lg hover:bg-primary hover:text-white transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40 data-animate="fadeInUp">
-                        Start Your Project with Riel
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Testimonials Section -->
-        <section class="py-20 md:py-32 bg-gray-50">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4 data-animate="slideInLeft">What Our Clients Say</h2>
-                <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16 data-animate="slideInRight">
-                    Our success is measured by the results we achieve for you.
-                </p>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <!-- Testimonial 1: Retailer (E-commerce match) -->
-                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary data-animate="fadeInUp">
-                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
-                        <p class="text-gray-700 italic mb-6">"Riel Innovations completely transformed our outdated website into a lead-generating machine. The entire process was professional, timely, and highly communicative. True experts."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=J.D." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
-                            <div>
-                                <p class="font-bold text-gray-900">John Doe</p>
-                                <p class="text-sm text-gray-500">CEO, Apex Solutions (E-commerce)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Testimonial 2: NEW MATCH - Ifanidigi (Cultural Platform match) -->
-                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary data-animate="fadeInUp">
-                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
-                        <p class="text-gray-700 italic mb-6">"The Ifanidigi platform is beautiful and technically flawless. They captured the spirit of our vision and delivered a fast, reliable, and engaging cultural resource."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=T.A." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
-                            <div>
-                                <p class="font-bold text-gray-900">Tolu Adekunle</p>
-                                <p class="text-sm text-gray-500">Founder, Ifanidigi</p>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Testimonial 3: Riel Writing Services (Service Website match) -->
-                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary data-animate="fadeInUp">
-                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
-                        <p class="text-gray-700 italic mb-6">"Our new service site is structured perfectly. The booking flow is seamless, and we've already seen a huge drop in client confusion. Highly recommend their strategic design."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=S.K." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
-                            <div>
-                                <p class="font-bold text-gray-900">Sarah K.</p>
-                                <p class="text-sm text-gray-500">Project Manager, Riel Writing Services</p>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. Contact Section -->
         <section id="contact" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4 data-animate="slideInLeft">Let's Discuss Your Project</h2>
-                <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 data-animate="slideInRight">
-                    Ready to build a website that works? Fill out the form below or reach out directly.
-                </p>
-
-                <div class="max-w-3xl mx-auto bg-gray-50 p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-primary data-animate="fadeInUp">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Let's Discuss Your Project</h2>
+                <div class="max-w-3xl mx-auto bg-gray-50 p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-primary mt-12" data-animate="fadeInUp">
                     
-                    <!-- SUCCESS MESSAGE CONTAINER (HIDDEN BY DEFAULT) -->
                     <div id="success-message" class="hidden text-center">
-                        <i class="fas fa-check-circle text-6xl text-primary mb-4 animate-fadeInUp"></i>
-                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Thank You! Your Request is Received.</h3>
-                        <p class="text-lg text-gray-700 mb-8">We've received your inquiry and will be in touch via email shortly to discuss your project details.</p>
-
-                        <p class="text-xl font-semibold text-gray-800 mb-4">Need an immediate quote? Chat with Riel now on WhatsApp!</p>
-                        
-                        <!-- WhatsApp CTA Button -->
-                        <a id="whatsapp-link" href="#" target="_blank" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:shadow-2xl hover:bg-green-600 transition duration-300 transform hover:scale-[1.03]">
+                        <i class="fas fa-check-circle text-6xl text-primary mb-4" data-animate="zoomIn"></i>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Thank You!</h3>
+                        <p class="text-lg text-gray-700 mb-8">We've received your inquiry.</p>
+                        <a id="whatsapp-link" href="#" target="_blank" class="inline-block bg-green-500 text-white font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:bg-green-600 transition duration-300 transform hover:scale-[1.03]">
                             <i class="fab fa-whatsapp mr-2"></i> Get a Quote on WhatsApp
                         </a>
                         <button onclick="resetFormView()" class="mt-6 text-primary hover:underline transition duration-200">Submit Another Request</button>
                     </div>
 
-                    <!-- CONTACT FORM (VISIBLE BY DEFAULT) -->
                     <form action="https://script.google.com/macros/s/AKfycbxtBpu_A76qcYIvcZhIj7NXxcXHAllVy0XUwp434NjUzfc0sMRkJDeWKG0FiLkEe_3a/exec" method="POST" id="contact-form">
-                        
-                        <!-- HIDDEN FIELD FOR REDIRECTION -->
                         <input type="hidden" name="redirect_url" id="redirect-url-input" value="https://yourdomain.com/#contact?success=true&whatsapp=08133413510">
-
                         <div class="mb-6">
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                            <input type="text" id="name" name="name" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm"
-                                placeholder="Jane Doe">
+                            <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm" placeholder="Jane Doe">
                         </div>
-
                         <div class="mb-6">
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                            <input type="email" id="email" name="email" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm"
-                                placeholder="jane@example.com">
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm" placeholder="jane@example.com">
                         </div>
-
                         <div class="mb-8">
                             <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Tell Us About Your Project</label>
-                            <textarea id="message" name="message" rows="5" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm"
-                                placeholder="I need a new corporate website with lead forms..."></textarea>
+                            <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm" placeholder="I need a new website..."></textarea>
                         </div>
-
-                        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl text-lg shadow-lg hover:shadow-xl hover:bg-gray-800 transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40">
-                            Send Message
-                        </button>
+                        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-6 rounded-xl text-lg shadow-lg hover:shadow-xl hover:bg-gray-800 transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40">Send Message</button>
                     </form>
-
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-primary text-white py-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8 mb-8">
-                
-                <!-- Logo/Brand -->
                 <div>
                     <h3 class="text-2xl font-extrabold mb-4">Riel Innovations</h3>
-                    <p class="text-gray-300 text-sm">
-                        Innovation Meets Functionality. Building high-impact web solutions for the future.
-                    </p>
+                    <p class="text-gray-300 text-sm">Innovation Meets Functionality.</p>
                 </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-gray-200">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-300 hover:text-white transition duration-200">Home</a></li>
-                        <li><a href="#services" class="text-gray-300 hover:text-white transition duration-200">Services</a></li>
-                        <li><a href="#portfolio" class="text-gray-300 hover:text-white transition duration-200">Portfolio</a></li>
-                        <li><a href="#about" class="text-gray-300 hover:text-white transition duration-200">About Us</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Services -->
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-gray-200">Our Services</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li>Personal Portfolio Websites</li>
-                        <li>Business/Corporate Websites</li>
-                        <li>High-Converting Landing Pages</li>
-                        <li>E-commerce Websites</li>
-                    </ul>
-                </div>
-                
-                <!-- Contact Info -->
                 <div>
                     <h4 class="text-lg font-semibold mb-4 text-gray-200">Connect With Us</h4>
-                    <!-- IDs added for dynamic update -->
                     <p id="footer-email" class="text-gray-300 mb-2 flex items-center"><i class="fas fa-envelope mr-3"></i> contact@rielinnovations.com</p>
                     <p class="text-gray-300 mb-4 flex items-center"><i class="fas fa-phone mr-3"></i> (555) 123-4567</p>
                     
-                    <!-- Container and IDs added for dynamic update -->
                     <div id="footer-socials" class="flex space-x-4">
                         <a id="facebook-link" href="#" target="_blank" class="text-gray-300 hover:text-white transition duration-200 text-xl"><i class="fab fa-facebook"></i></a>
                         <a id="twitter-link" href="#" target="_blank" class="text-gray-300 hover:text-white transition duration-200 text-xl"><i class="fab fa-twitter"></i></a>
+                        <!-- LINKEDIN ID IS HERE -->
                         <a id="linkedin-link" href="#" target="_blank" class="text-gray-300 hover:text-white transition duration-200 text-xl"><i class="fab fa-linkedin"></i></a>
                         <a id="instagram-link" href="#" target="_blank" class="text-gray-300 hover:text-white transition duration-200 text-xl"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
-
-            <div class="text-center text-sm text-gray-400 pt-8">
-                &copy; 2025 Riel Innovations. All rights reserved. Built with passion and functionality.
-            </div>
+            <div class="text-center text-sm text-gray-400 pt-8">&copy; 2025 Riel Innovations. All rights reserved.</div>
         </div>
     </footer>
 
     <script>
-        // NOTE: DATA SERVICE URL IS SET TO THE CONTACT FORM URL. This implies the same deployed script must contain both doPost() and doGet() functions.
         const DATA_SERVICE_URL = "https://script.google.com/macros/s/AKfycbxtBpu_A76qcYIvcZhIj7NXxcXHAllVy0XUwp434NjUzfc0sMRkJDeWKG0FiLkEe_3a/exec"; 
         
-        // Global function to reset the form view
         function resetFormView() {
             const form = document.getElementById('contact-form');
             const successMessage = document.getElementById('success-message');
-
             form.classList.remove('hidden');
             successMessage.classList.add('hidden');
             form.reset(); 
-            
-            // Clean up the URL hash after reset
             history.pushState(null, '', window.location.pathname + window.location.hash.split('?')[0]);
         }
 
-        /**
-         * Applies data fetched from the Google Sheet (mini-dashboard) to the HTML elements.
-         * @param {Object} data - The JSON object containing key-value pairs from the sheet.
-         */
         function applyDynamicData(data) {
-            console.log('Applying dynamic data:', data);
+            console.log('Applying dynamic data:', data); // Check Console for this!
 
-            // --- 1. Portfolio Images and Links ---
-            
-            // Project 1 (E-commerce)
-            document.getElementById('portfolio-img-1').src = data.image_portfolio_1 || document.getElementById('portfolio-img-1').src;
-            
-            // Project 2 (Ifanidigi) - Now dynamic, pulling from the sheet
-            document.getElementById('portfolio-img-2').src = data.image_portfolio_2 || document.getElementById('portfolio-img-2').src;
+            // Portfolio Images
+            if (data.image_portfolio_1) document.getElementById('portfolio-img-1').src = data.image_portfolio_1;
+            if (data.image_portfolio_2) document.getElementById('portfolio-img-2').src = data.image_portfolio_2;
+            if (data.image_portfolio_3) document.getElementById('portfolio-img-3').src = data.image_portfolio_3;
 
-            // Project 3 (Riel Writing Services)
-            document.getElementById('portfolio-img-3').src = data.image_portfolio_3 || document.getElementById('portfolio-img-3').src;
-
-            // --- 2. Footer Contact & Socials ---
-            // Email
+            // Footer
             const footerEmail = document.getElementById('footer-email');
-            if (data.contact_email) {
-                footerEmail.innerHTML = '<i class="fas fa-envelope mr-3"></i> ' + data.contact_email;
-            }
+            if (data.contact_email) footerEmail.innerHTML = '<i class="fas fa-envelope mr-3"></i> ' + data.contact_email;
             
             // Social Links
-            document.getElementById('facebook-link').href = data.facebook_url || "#";
-            document.getElementById('twitter-link').href = data.twitter_url || "#";
-            document.getElementById('linkedin-link').href = data.linkedin_url || "#";
-            document.getElementById('instagram-link').href = data.instagram_url || "#";
+            if (data.facebook_url) document.getElementById('facebook-link').href = data.facebook_url;
+            if (data.twitter_url) document.getElementById('twitter-link').href = data.twitter_url;
+            if (data.linkedin_url) document.getElementById('linkedin-link').href = data.linkedin_url;
+            if (data.instagram_url) document.getElementById('instagram-link').href = data.instagram_url;
             
-            // --- 3. Logo Update (Dynamic) ---
+            // Logo
             const logoImg = document.querySelector('header img');
-            if (data.logo_url) {
-                logoImg.src = data.logo_url;
-                // Since the logo is dynamic, we must ensure the fallback text is hidden if the image loads.
-                // We trust the onerror handler to show the fallback if the fetch fails.
-            }
+            if (data.logo_url) logoImg.src = data.logo_url;
         }
 
-        /**
-         * Fetches data from the deployed Data Service Apps Script.
-         */
         async function fetchDynamicData() {
             try {
                 const response = await fetch(DATA_SERVICE_URL);
-                
-                if (!response.ok) {
-                    console.error("Failed to connect to Data Service Apps Script: Server returned non-200 status. Check deployment access.");
-                    return;
-                }
-                
+                if (!response.ok) { console.error("Failed to connect. Check permissions."); return; }
                 const data = await response.json();
-                
-                if (data.error) {
-                    console.error("Error fetching data from Google Sheet:", data.error);
-                    return;
-                }
+                if (data.error) { console.error("Sheet Error:", data.error); return; }
                 
                 applyDynamicData(data);
             } catch (error) {
-                // The TypeError "Failed to fetch" is usually a CORS/Permission issue with Google Apps Script
-                console.error("Failed to connect to Data Service Apps Script (Network/Permissions Error):", error);
-                console.error("--- ACTION REQUIRED: ---");
-                console.error("Please ensure your Google Apps Script is deployed as a Web App with 'Who has access' set to 'Anyone'.");
+                console.error("Connection Error:", error);
             }
         }
 
-
         document.addEventListener('DOMContentLoaded', () => {
-            // Initiate fetching dynamic content when the page loads
             fetchDynamicData();
 
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -585,55 +358,35 @@
             const contactForm = document.getElementById('contact-form');
             const successMessage = document.getElementById('success-message');
             const whatsappLink = document.getElementById('whatsapp-link');
-            
-            // --- REMOVED: Imgur embed script injection ---
 
-
-            // --- 1. Preloader Logic ---
             window.addEventListener('load', () => {
                 preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
+                setTimeout(() => { preloader.style.display = 'none'; }, 500);
             });
 
-            // --- 2. Mobile Menu Toggle ---
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
 
-            // --- 3. Smooth Scrolling & Mobile Menu Close ---
             navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
                 });
             });
 
-            // --- 4. Handle Post-Submission Success Message ---
             const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
             const isSuccess = urlParams.get('success') === 'true';
             const whatsappNumber = urlParams.get('whatsapp');
 
             if (isSuccess) {
-                // Hide form, show success message
                 contactForm.classList.add('hidden');
                 successMessage.classList.remove('hidden');
-
-                // Set up the WhatsApp link dynamically
                 if (whatsappNumber) {
                     const message = encodeURIComponent("Hello Riel Innovations, I just submitted a contact form on your website and would like to get a quick quote now.");
                     const formattedNumber = whatsappNumber.replace(/\D/g, ''); 
                     whatsappLink.href = `https://wa.me/${formattedNumber}?text=${message}`;
                 }
-            } else {
-                // Ensure form is visible if no success parameter is found
-                contactForm.classList.remove('hidden');
-                successMessage.classList.add('hidden');
             }
-            
-            // --- 5. Scroll Animation (Fade In Up, Slide In Left/Right) trigger ---
+
+            // --- ANIMATION LOGIC (NEW) ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -643,41 +396,24 @@
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const target = entry.target;
-                        const animationClass = target.getAttribute('data-animate');
-
-                        if (animationClass) {
-                            target.classList.add(animationClass);
-                        } else {
-                            target.classList.add('animate-fadeInUp');
-                        }
-                        observer.unobserve(target);
+                        entry.target.classList.add('animate-active'); // Use new generic active class
+                        observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
 
+            // 1. Observe standard items
             document.querySelectorAll('[data-animate]').forEach(el => {
-                el.style.opacity = '0';
-                if (el.getAttribute('data-animate') === 'slideInLeft') {
-                    el.style.transform = 'translateX(-50px)';
-                } else if (el.getAttribute('data-animate') === 'slideInRight') {
-                    el.style.transform = 'translateX(50px)';
-                } else {
-                    el.style.transform = 'translateY(20px)';
-                }
-
-                el.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out';
-                
                 observer.observe(el);
             });
 
-            document.querySelectorAll('section:not(#home) .container > *').forEach(el => {
-                if (!el.hasAttribute('data-animate')) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(20px)';
-                    el.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out';
-                    observer.observe(el);
-                }
+            // 2. Add Stagger Delay Logic
+            document.querySelectorAll('.stagger-container').forEach(container => {
+                const children = container.querySelectorAll('[data-animate]');
+                children.forEach((child, index) => {
+                    // Stagger by 150ms per item
+                    child.style.transitionDelay = `${index * 150}ms`; 
+                });
             });
         });
     </script>
