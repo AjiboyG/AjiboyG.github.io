@@ -238,6 +238,57 @@
             </div>
         </section>
 
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">What Our Clients Say</h2>
+                <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16" data-animate="slideInRight">
+                    Our success is measured by the results we achieve for you.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto stagger-container">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary" data-animate="fadeInUp">
+                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
+                        <p class="text-gray-700 italic mb-6">"Riel Innovations completely transformed our outdated website into a lead-generating machine. The entire process was professional, timely, and highly communicative. True experts."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=J.D." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <div>
+                                <p class="font-bold text-gray-900">John Doe</p>
+                                <p class="text-sm text-gray-500">CEO, Apex Solutions (E-commerce)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary" data-animate="fadeInUp">
+                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
+                        <p class="text-gray-700 italic mb-6">"The Ifanidigi platform is beautiful and technically flawless. They captured the spirit of our vision and delivered a fast, reliable, and engaging cultural resource."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=T.A." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <div>
+                                <p class="font-bold text-gray-900">Tolu Adekunle</p>
+                                <p class="text-sm text-gray-500">Founder, Ifanidigi</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white p-8 rounded-xl shadow-xl border-b-4 border-primary" data-animate="fadeInUp">
+                        <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
+                        <p class="text-gray-700 italic mb-6">"Our new service site is structured perfectly. The booking flow is seamless, and we've already seen a huge drop in client confusion. Highly recommend their strategic design."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/F7F9FB/0B4F6C?text=S.K." alt="Client Image" class="w-12 h-12 rounded-full mr-4 bg-primary">
+                            <div>
+                                <p class="font-bold text-gray-900">Sarah K.</p>
+                                <p class="text-sm text-gray-500">Project Manager, Riel Writing Services</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="contact" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Let's Discuss Your Project</h2>
@@ -303,6 +354,17 @@
     <script>
         const DATA_SERVICE_URL = "https://script.google.com/macros/s/AKfycbxtBpu_A76qcYIvcZhIj7NXxcXHAllVy0XUwp434NjUzfc0sMRkJDeWKG0FiLkEe_3a/exec"; 
         
+        // Helper to ensure URLs are absolute (prevents relative path errors)
+        function ensureAbsoluteUrl(url) {
+            if (!url) return "#";
+            // If it starts with http or https, it's fine
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                return url;
+            }
+            // Otherwise, assume it's a domain and prepend https://
+            return "https://" + url;
+        }
+
         function resetFormView() {
             const form = document.getElementById('contact-form');
             const successMessage = document.getElementById('success-message');
@@ -324,11 +386,11 @@
             const footerEmail = document.getElementById('footer-email');
             if (data.contact_email) footerEmail.innerHTML = '<i class="fas fa-envelope mr-3"></i> ' + data.contact_email;
             
-            // Social Links
-            if (data.facebook_url) document.getElementById('facebook-link').href = data.facebook_url;
-            if (data.twitter_url) document.getElementById('twitter-link').href = data.twitter_url;
-            if (data.linkedin_url) document.getElementById('linkedin-link').href = data.linkedin_url;
-            if (data.instagram_url) document.getElementById('instagram-link').href = data.instagram_url;
+            // Social Links - Now using ensureAbsoluteUrl
+            if (data.facebook_url) document.getElementById('facebook-link').href = ensureAbsoluteUrl(data.facebook_url);
+            if (data.twitter_url) document.getElementById('twitter-link').href = ensureAbsoluteUrl(data.twitter_url);
+            if (data.linkedin_url) document.getElementById('linkedin-link').href = ensureAbsoluteUrl(data.linkedin_url);
+            if (data.instagram_url) document.getElementById('instagram-link').href = ensureAbsoluteUrl(data.instagram_url);
             
             // Logo
             const logoImg = document.querySelector('header img');
