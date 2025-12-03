@@ -28,6 +28,47 @@
         [data-animate="zoomIn"] { transform: scale(0.8); filter: blur(5px); }
         [data-animate].animate-active { opacity: 1; transform: translate(0) scale(1); filter: blur(0); }
 
+        /* --- ALIVE BACKGROUNDS (UPDATED FOR VISIBILITY) --- */
+        
+        /* 1. Hero Particle Canvas Container */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content */
+            pointer-events: none;
+        }
+
+        /* 2. Soft Breathing Gradient (Services, Portfolio, Contact) */
+        /* Made slightly deeper/more visible */
+        .bg-alive-gradient {
+            background: linear-gradient(-45deg, #ffffff, #dbeafe, #eff6ff, #e0f2fe);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3. Subtle Tech Grid (About, Testimonials) */
+        /* Increased opacity for visibility */
+        .bg-alive-grid {
+            background-color: #f9fafb;
+            background-image: 
+                linear-gradient(rgba(11, 79, 108, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(11, 79, 108, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px; /* Slightly larger cells */
+            animation: gridMove 50s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
         /* Preloader CSS */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f7f9fb;
@@ -49,9 +90,6 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <!-- LOGO SECTION -->
             <a href="#home" class="flex items-center space-x-2 transition duration-300 hover:opacity-80">
-                <!-- 
-                   UPDATED: Using direct Imgur link for the logo.
-                -->
                 <img 
                     id="header-logo"
                     src="https://i.imgur.com/yMr6G5R.png" 
@@ -69,6 +107,8 @@
                 <a href="#services" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Services</a>
                 <a href="#about" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">About</a>
                 <a href="#portfolio" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Portfolio</a>
+                <!-- Added Testimonials Link -->
+                <a href="#testimonials" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Testimonials</a>
                 <a href="#contact" class="nav-link text-white bg-primary px-4 py-2 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 transform hover:-translate-y-px hover:-shadow-lg">Contact Us</a>
             </nav>
 
@@ -81,14 +121,20 @@
                 <a href="#services" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Services</a>
                 <a href="#about" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">About</a>
                 <a href="#portfolio" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Portfolio</a>
+                <!-- Added Testimonials Mobile Link -->
+                <a href="#testimonials" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Testimonials</a>
                 <a href="#contact" class="nav-link py-2 text-white bg-primary text-center rounded-lg shadow-md hover:bg-gray-800 transition duration-300 transform hover:-translate-y-px hover:-shadow-lg">Contact Us</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <section id="home" class="h-screen flex items-center bg-gray-50/50">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <!-- HERO SECTION: Tech Particle Background -->
+        <section id="home" class="h-screen flex items-center relative overflow-hidden">
+            <!-- Canvas for Particle Animation -->
+            <canvas id="hero-canvas"></canvas>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
                 <p class="text-xl text-primary font-semibold mb-4" data-animate="slideInLeft" style="transition-delay: 100ms;">Strategy. Design. Development.</p>
                 <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-6" data-animate="zoomIn" style="transition-delay: 200ms;">We Build <span class="text-primary">Websites</span> <br class="hidden sm:inline"> That Work.</h1>
                 <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10" data-animate="fadeInUp" style="transition-delay: 400ms;">Your digital presence is your most valuable asset. At Riel Innovations, <span class="font-bold text-gray-900">Innovation Meets Functionality</span>.</p>
@@ -98,26 +144,27 @@
             </div>
         </section>
 
-        <section id="services" class="py-20 md:py-32 bg-white">
+        <!-- SERVICES SECTION: Alive Gradient -->
+        <section id="services" class="py-20 md:py-32 bg-alive-gradient">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Expertise</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16 stagger-container">
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-user-tie text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Personal Portfolio Websites</h3>
                         <p class="text-gray-600">Showcase your work and story with a custom, high-impact online portfolio.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-building text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Business/Corporate Websites</h3>
                         <p class="text-gray-600">Establish authority with a professional corporate website designed for growth.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-rocket text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Landing Pages</h3>
                         <p class="text-gray-600">Drive campaign success with targeted, high-converting landing pages.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-shopping-cart text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">E-commerce Websites</h3>
                         <p class="text-gray-600">Launch your online store with secure, seamless platforms designed for sales.</p>
@@ -126,8 +173,8 @@
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 md:py-32 bg-gray-50">
+        <!-- ABOUT SECTION: Alive Grid -->
+        <section id="about" class="py-20 md:py-32 bg-alive-grid">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Why Choose Riel Innovations?</h2>
@@ -183,13 +230,14 @@
             </div>
         </section>
 
-        <section id="portfolio" class="py-20 md:py-32 bg-white">
+        <!-- PORTFOLIO SECTION: Alive Gradient -->
+        <section id="portfolio" class="py-20 md:py-32 bg-alive-gradient">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Recent Work</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 stagger-container">
                     
                     <!-- Project 1 -->
-                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
+                    <a href="#" target="_blank" class="group bg-white rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-1" src="https://placehold.co/600x400/0B4F6C/ffffff?text=Premium+E-commerce" alt="E-commerce Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Retailer Online Store</h3>
@@ -199,7 +247,7 @@
                     </a>
 
                     <!-- Project 2: IFANIDIGI -->
-                    <a href="https://ifanijigiproductions.tv/" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
+                    <a href="https://ifanijigiproductions.tv/" target="_blank" class="group bg-white rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-2" src="https://placehold.co/600x400/2E86AB/ffffff?text=Ifanidigi+Culture" alt="Cultural Documentary Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Ifanidigi: Yoruba Heritage</h3>
@@ -209,7 +257,7 @@
                     </a>
                     
                     <!-- Project 3 -->
-                    <a href="#" target="_blank" class="group bg-gray-50 rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
+                    <a href="#" target="_blank" class="group bg-white rounded-xl shadow-xl overflow-hidden transform transition duration-500 hover:scale-[1.02]" data-animate="fadeInUp">
                         <img id="portfolio-img-3" src="https://placehold.co/600x400/2F4F4F/ffffff?text=CV+Writing+Services" alt="Professional Writing Service Website" class="w-full h-56 object-cover transition duration-500 group-hover:opacity-80">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-gray-800">Riel Writing Services</h3>
@@ -221,8 +269,8 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 md:py-32 bg-gray-50">
+        <!-- Testimonials Section: Alive Grid -->
+        <section id="testimonials" class="py-20 md:py-32 bg-alive-grid">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">What Our Clients Say</h2>
                 <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16" data-animate="slideInRight">
@@ -275,10 +323,10 @@
             </div>
         </section>
 
-        <section id="contact" class="py-20 md:py-32 bg-white">
+        <section id="contact" class="py-20 md:py-32 bg-alive-gradient">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Let's Discuss Your Project</h2>
-                <div class="max-w-3xl mx-auto bg-gray-50 p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-primary mt-12" data-animate="fadeInUp">
+                <div class="max-w-3xl mx-auto bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-primary mt-12" data-animate="fadeInUp">
                     
                     <div id="success-message" class="hidden text-center">
                         <i class="fas fa-check-circle text-6xl text-primary mb-4" data-animate="zoomIn"></i>
@@ -291,7 +339,8 @@
                     </div>
 
                     <form action="https://script.google.com/macros/s/AKfycbxtBpu_A76qcYIvcZhIj7NXxcXHAllVy0XUwp434NjUzfc0sMRkJDeWKG0FiLkEe_3a/exec" method="POST" id="contact-form">
-                        <input type="hidden" name="redirect_url" id="redirect-url-input" value="https://yourdomain.com/#contact?success=true&whatsapp=08133413510">
+                        <!-- Updated fallback whatsapp number in value attribute -->
+                        <input type="hidden" name="redirect_url" id="redirect-url-input" value="https://yourdomain.com/#contact?success=true&whatsapp=2348133413510">
                         <div class="mb-6">
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                             <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 shadow-sm" placeholder="Jane Doe">
@@ -320,9 +369,30 @@
                     <p class="text-gray-300 text-sm">Innovation Meets Functionality.</p>
                 </div>
                 <div>
+                    <h4 class="text-lg font-semibold mb-4 text-gray-200">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition duration-200">Home</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-white transition duration-200">Services</a></li>
+                        <li><a href="#portfolio" class="text-gray-300 hover:text-white transition duration-200">Portfolio</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-white transition duration-200">About Us</a></li>
+                        <!-- Added Testimonials to Footer -->
+                        <li><a href="#testimonials" class="text-gray-300 hover:text-white transition duration-200">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-gray-200">Our Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li>Personal Portfolio Websites</li>
+                        <li>Business/Corporate Websites</li>
+                        <li>High-Converting Landing Pages</li>
+                        <li>E-commerce Websites</li>
+                    </ul>
+                </div>
+                <div>
                     <h4 class="text-lg font-semibold mb-4 text-gray-200">Connect With Us</h4>
                     <p id="footer-email" class="text-gray-300 mb-2 flex items-center"><i class="fas fa-envelope mr-3"></i> contact@rielinnovations.com</p>
-                    <p class="text-gray-300 mb-4 flex items-center"><i class="fas fa-phone mr-3"></i> (555) 123-4567</p>
+                    <!-- UPDATED PHONE NUMBER IN FOOTER -->
+                    <p class="text-gray-300 mb-4 flex items-center"><i class="fas fa-phone mr-3"></i> +234-813-341-3510</p>
                     
                     <div id="footer-socials" class="flex space-x-4">
                         <a id="facebook-link" href="#" target="_blank" class="text-gray-300 hover:text-white transition duration-200 text-xl"><i class="fab fa-facebook"></i></a>
@@ -378,11 +448,9 @@
             if (data.linkedin_url) document.getElementById('linkedin-link').href = ensureAbsoluteUrl(data.linkedin_url);
             if (data.instagram_url) document.getElementById('instagram-link').href = ensureAbsoluteUrl(data.instagram_url);
             
-            // Logo - Only replace src if value exists
-            // REMOVED DYNAMIC FETCH SO SVG LOADS INSTANTLY
-            // if (data.logo_url) {
-            //    document.getElementById('header-logo').src = data.logo_url;
-            // }
+            // Logo
+            const logoImg = document.querySelector('header img');
+            if (data.logo_url) logoImg.src = data.logo_url;
         }
 
         async function fetchDynamicData() {
@@ -422,47 +490,6 @@
                 });
             });
 
-            // --- NEW: AJAX FORM SUBMISSION HANDLER ---
-            if (contactForm) {
-                contactForm.addEventListener('submit', async (e) => {
-                    e.preventDefault(); // Prevents redirect to Google Script URL
-                    
-                    const submitBtn = contactForm.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = 'Sending...';
-                    submitBtn.disabled = true;
-
-                    try {
-                        // Send data to Apps Script in background
-                        await fetch(contactForm.action, {
-                            method: 'POST',
-                            body: new FormData(contactForm),
-                            mode: 'no-cors' // Required for Google Apps Script
-                        });
-
-                        // On Success: Switch to Success Message UI
-                        contactForm.classList.add('hidden');
-                        successMessage.classList.remove('hidden');
-                        
-                        // Manually set WhatsApp link for the AJAX flow
-                        const message = encodeURIComponent("Hello Riel Innovations, I just submitted a contact form on your website and would like to get a quick quote now.");
-                        const number = "08133413510"; 
-                        whatsappLink.href = `https://wa.me/${number}?text=${message}`;
-
-                        // Optional: Scroll to success message
-                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    } catch (error) {
-                        console.error('Submission Error:', error);
-                        alert('There was a problem sending your message. Please try again.');
-                    } finally {
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                    }
-                });
-            }
-
-            // --- Handle URL Params (Fallback/Legacy) ---
             const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
             const isSuccess = urlParams.get('success') === 'true';
             const whatsappNumber = urlParams.get('whatsapp');
@@ -506,7 +533,96 @@
                     child.style.transitionDelay = `${index * 150}ms`; 
                 });
             });
+
+            // --- TECH PARTICLE ANIMATION FOR HERO ---
+            initHeroParticles();
         });
+
+        function initHeroParticles() {
+            const canvas = document.getElementById('hero-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            // Configuration (INCREASED FOR VISIBILITY)
+            const particleCount = 80; // Increased count
+            const connectionDistance = 180; // Increased range
+            const speed = 0.5;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * speed;
+                    this.vy = (Math.random() - 0.5) * speed;
+                    this.size = Math.random() * 3 + 1.5; // Increased size range
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    // Bounce off edges
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = 'rgba(11, 79, 108, 0.4)'; // Increased opacity
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                // Update and draw particles
+                particles.forEach((p, index) => {
+                    p.update();
+                    p.draw();
+
+                    // Connect nearby particles
+                    for (let j = index + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < connectionDistance) {
+                            // Increased opacity calculation for lines
+                            ctx.strokeStyle = `rgba(11, 79, 108, ${0.3 - distance/connectionDistance * 0.3})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                initParticles();
+            });
+
+            resize();
+            initParticles();
+            animate();
+        }
     </script>
 </body>
 </html>
