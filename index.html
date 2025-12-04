@@ -16,7 +16,97 @@
         .text-primary { color: #0b4f6c; }
         .border-primary { border-color: #0b4f6c; }
         
-        /* --- MODERN SCROLL ANIMATIONS --- */
+        /* --- 1. TECHY BUTTON ANIMATION --- */
+        .btn-tech-modern {
+            background: linear-gradient(90deg, #0b4f6c 0%, #2e86ab 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        /* The "Shimmer" Effect */
+        .btn-tech-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+            z-index: -1;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .btn-tech-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(46, 134, 171, 0.6); /* Glowing Blue Shadow */
+            border-color: #fff;
+        }
+
+        /* --- 2. 3D LOGO STYLING --- */
+        .logo-3d {
+            filter: brightness(1.1) drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease, filter 0.3s ease;
+            transform: perspective(500px) rotateX(10deg); /* Static 3D Tilt */
+        }
+        .logo-3d:hover {
+            transform: perspective(500px) rotateX(0deg) scale(1.05); /* Pop out on hover */
+            filter: brightness(1.2) drop-shadow(4px 8px 10px rgba(11, 79, 108, 0.4));
+        }
+
+        /* --- 3. NEW BACKGROUND ANIMATIONS --- */
+        
+        /* Hero Particle Canvas Container (UNTOUCHED) */
+        #hero-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+            background: linear-gradient(-45deg, #0b4f6c, #2e86ab, #0b4f6c, #1a202c);
+            background-size: 400% 400%;
+            animation: breathingGradient 15s ease infinite;
+        }
+        @keyframes breathingGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Tech Waves (Replaces Alive Gradient) - For Services & Portfolio */
+        /* Made background slightly darker and animation faster for visibility */
+        .bg-tech-waves {
+            background-color: #e6f4ff; /* Slightly darker base for contrast */
+            background-image: radial-gradient(circle at 50% 50%, rgba(11, 79, 108, 0.08) 0%, transparent 50%); /* Increased opacity */
+            background-size: 80px 80px; /* Tighter pattern */
+            animation: ripple 3s linear infinite; /* Faster animation */
+        }
+        @keyframes ripple {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        /* Digital Circuit (Replaces Grid) - For About & Testimonials */
+        /* Increased opacity and speed */
+        .bg-digital-circuit {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(90deg, rgba(11,79,108,0.1) 50%, transparent 50%),
+                linear-gradient(rgba(11,79,108,0.1) 50%, transparent 50%);
+            background-size: 50px 50px;
+            animation: circuitFlow 15s linear infinite; /* Faster animation */
+        }
+        @keyframes circuitFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* --- SCROLL ANIMATIONS --- */
         [data-animate] {
             opacity: 0;
             transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -27,47 +117,6 @@
         [data-animate="slideInRight"] { transform: translateX(100px); filter: blur(5px); }
         [data-animate="zoomIn"] { transform: scale(0.8); filter: blur(5px); }
         [data-animate].animate-active { opacity: 1; transform: translate(0) scale(1); filter: blur(0); }
-
-        /* --- ALIVE BACKGROUNDS (UPDATED FOR VISIBILITY) --- */
-        
-        /* 1. Hero Particle Canvas Container */
-        #hero-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* Behind content */
-            pointer-events: none;
-        }
-
-        /* 2. Soft Breathing Gradient (Services, Portfolio, Contact) */
-        /* Made slightly deeper/more visible */
-        .bg-alive-gradient {
-            background: linear-gradient(-45deg, #ffffff, #dbeafe, #eff6ff, #e0f2fe);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* 3. Subtle Tech Grid (About, Testimonials) */
-        /* Increased opacity for visibility */
-        .bg-alive-grid {
-            background-color: #f9fafb;
-            background-image: 
-                linear-gradient(rgba(11, 79, 108, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(11, 79, 108, 0.08) 1px, transparent 1px);
-            background-size: 40px 40px; /* Slightly larger cells */
-            animation: gridMove 50s linear infinite;
-        }
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 40px 40px; }
-        }
 
         /* Preloader CSS */
         #preloader {
@@ -94,12 +143,12 @@
                     id="header-logo"
                     src="https://i.imgur.com/yMr6G5R.png" 
                     alt="Riel Innovations Logo" 
-                    class="h-12 w-auto" 
+                    class="h-6 w-auto logo-3d" 
                     fetchpriority="high"
                     loading="eager"
                     onerror="this.style.display='none';"
                 >
-                <span class="text-2xl font-extrabold text-primary">Riel Innovations</span>
+                <span class="text-xl md:text-2xl font-extrabold text-primary">Riel Innovations</span>
             </a>
             
             <nav class="hidden md:flex space-x-8">
@@ -107,7 +156,6 @@
                 <a href="#services" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Services</a>
                 <a href="#about" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">About</a>
                 <a href="#portfolio" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Portfolio</a>
-                <!-- Added Testimonials Link -->
                 <a href="#testimonials" class="nav-link text-gray-600 hover:text-primary transition duration-300 font-medium">Testimonials</a>
                 <a href="#contact" class="nav-link text-white bg-primary px-4 py-2 rounded-lg shadow-md hover:bg-gray-800 transition duration-300 transform hover:-translate-y-px hover:-shadow-lg">Contact Us</a>
             </nav>
@@ -121,7 +169,6 @@
                 <a href="#services" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Services</a>
                 <a href="#about" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">About</a>
                 <a href="#portfolio" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Portfolio</a>
-                <!-- Added Testimonials Mobile Link -->
                 <a href="#testimonials" class="nav-link py-2 text-gray-600 hover:bg-gray-100 rounded-md transition duration-200">Testimonials</a>
                 <a href="#contact" class="nav-link py-2 text-white bg-primary text-center rounded-lg shadow-md hover:bg-gray-800 transition duration-300 transform hover:-translate-y-px hover:-shadow-lg">Contact Us</a>
             </nav>
@@ -129,43 +176,42 @@
     </header>
 
     <main>
-        <!-- HERO SECTION: Tech Particle Background -->
-        <!-- Changed height from h-screen to min-h-[75vh] for a more moderate height -->
-        <section id="home" class="min-h-[75vh] flex items-center relative overflow-hidden">
-            <!-- Canvas for Particle Animation -->
+        <!-- HERO SECTION: Tech Particle Background (Untouched) -->
+        <section id="home" class="min-h-[75vh] flex items-center relative overflow-hidden text-white">
             <canvas id="hero-canvas"></canvas>
             
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center relative z-10">
-                <p class="text-xl text-primary font-semibold mb-4" data-animate="slideInLeft" style="transition-delay: 100ms;">Strategy. Design. Development.</p>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight mb-6" data-animate="zoomIn" style="transition-delay: 200ms;">We Build <span class="text-primary">Websites</span> <br class="hidden sm:inline"> That Work.</h1>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10" data-animate="fadeInUp" style="transition-delay: 400ms;">Your digital presence is your most valuable asset. At Riel Innovations, <span class="font-bold text-gray-900">Innovation Meets Functionality</span>.</p>
+                <p class="text-xl text-blue-300 font-semibold mb-4" data-animate="slideInLeft" style="transition-delay: 100ms;">Strategy. Design. Development.</p>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6" data-animate="zoomIn" style="transition-delay: 200ms;">We Build <span class="text-blue-300">Websites</span> <br class="hidden sm:inline"> That Work.</h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-10" data-animate="fadeInUp" style="transition-delay: 400ms;">Your digital presence is your most valuable asset. At Riel Innovations, <span class="font-bold text-white">Innovation Meets Functionality</span>.</p>
                 <div data-animate="fadeInUp" style="transition-delay: 600ms;">
-                    <a href="#contact" class="inline-block bg-primary text-white font-bold py-3 px-8 rounded-xl text-lg shadow-xl hover:shadow-2xl hover:bg-gray-800 transition duration-300 transform hover:scale-[1.03] hover:ring-4 hover:ring-primary/40">Start Your Project Today</a>
+                    <!-- UPDATED BUTTON CLASS -->
+                    <a href="#contact" class="inline-block btn-tech-modern text-white font-bold py-4 px-10 rounded-xl text-lg shadow-xl">Start Your Project Today</a>
                 </div>
             </div>
         </section>
 
-        <!-- SERVICES SECTION: Alive Gradient -->
-        <section id="services" class="py-20 md:py-32 bg-alive-gradient">
+        <!-- SERVICES SECTION: Tech Waves Background -->
+        <section id="services" class="py-20 md:py-32 bg-tech-waves">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Expertise</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16 stagger-container">
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-user-tie text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Personal Portfolio Websites</h3>
                         <p class="text-gray-600">Showcase your work and story with a custom, high-impact online portfolio.</p>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-building text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Business/Corporate Websites</h3>
                         <p class="text-gray-600">Establish authority with a professional corporate website designed for growth.</p>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-rocket text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">Landing Pages</h3>
                         <p class="text-gray-600">Drive campaign success with targeted, high-converting landing pages.</p>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
+                    <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 group border-t-4 border-primary" data-animate="fadeInUp">
                         <i class="fas fa-shopping-cart text-4xl text-primary mb-4 group-hover:scale-110 transition duration-300"></i>
                         <h3 class="text-xl font-bold mb-3 text-gray-800">E-commerce Websites</h3>
                         <p class="text-gray-600">Launch your online store with secure, seamless platforms designed for sales.</p>
@@ -174,8 +220,8 @@
             </div>
         </section>
 
-        <!-- ABOUT SECTION: Alive Grid -->
-        <section id="about" class="py-20 md:py-32 bg-alive-grid">
+        <!-- ABOUT SECTION: Digital Circuit Background -->
+        <section id="about" class="py-20 md:py-32 bg-digital-circuit">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Why Choose Riel Innovations?</h2>
@@ -231,8 +277,8 @@
             </div>
         </section>
 
-        <!-- PORTFOLIO SECTION: Alive Gradient -->
-        <section id="portfolio" class="py-20 md:py-32 bg-alive-gradient">
+        <!-- PORTFOLIO SECTION: Tech Waves Background -->
+        <section id="portfolio" class="py-20 md:py-32 bg-tech-waves">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Our Recent Work</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 stagger-container">
@@ -270,8 +316,8 @@
             </div>
         </section>
 
-        <!-- Testimonials Section: Alive Grid -->
-        <section id="testimonials" class="py-20 md:py-32 bg-alive-grid">
+        <!-- Testimonials Section: Digital Circuit Background -->
+        <section id="testimonials" class="py-20 md:py-32 bg-digital-circuit">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">What Our Clients Say</h2>
                 <p class="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-16" data-animate="slideInRight">
@@ -298,8 +344,8 @@
                         <i class="fas fa-quote-left text-3xl text-primary mb-4"></i>
                         <p class="text-gray-700 italic mb-6">"The Ifanidigi platform is beautiful and technically flawless. They captured the spirit of our vision and delivered a fast, reliable, and engaging cultural resource."</p>
                         <div class="flex items-center">
-                            <!-- Tolu Adekunle (Updated Image) -->
-                            <img src="https://cdn.pixabay.com/photo/2020/01/20/17/30/look-4780865_640.jpg" alt="Tolu Adekunle" class="w-12 h-12 rounded-full mr-4 border-2 border-primary object-cover object-center">
+                            <!-- Tolu Adekunle (Updated with a centered professional headshot) -->
+                            <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=200&q=80" alt="Tolu Adekunle" class="w-12 h-12 rounded-full mr-4 border-2 border-primary object-cover object-center">
                             <div>
                                 <p class="font-bold text-gray-900">Tolu Adekunle</p>
                                 <p class="text-sm text-gray-500">Founder, Ifanidigi</p>
@@ -324,7 +370,7 @@
             </div>
         </section>
 
-        <section id="contact" class="py-20 md:py-32 bg-alive-gradient">
+        <section id="contact" class="py-20 md:py-32 bg-tech-waves">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-4" data-animate="slideInLeft">Let's Discuss Your Project</h2>
                 <div class="max-w-3xl mx-auto bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl border-t-8 border-primary mt-12" data-animate="fadeInUp">
@@ -491,6 +537,47 @@
                 });
             });
 
+            // --- NEW: AJAX FORM SUBMISSION HANDLER ---
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault(); // Prevents redirect to Google Script URL
+                    
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
+
+                    try {
+                        // Send data to Apps Script in background
+                        await fetch(contactForm.action, {
+                            method: 'POST',
+                            body: new FormData(contactForm),
+                            mode: 'no-cors' // Required for Google Apps Script
+                        });
+
+                        // On Success: Switch to Success Message UI
+                        contactForm.classList.add('hidden');
+                        successMessage.classList.remove('hidden');
+                        
+                        // Manually set WhatsApp link for the AJAX flow
+                        const message = encodeURIComponent("Hello Riel Innovations, I just submitted a contact form on your website and would like to get a quick quote now.");
+                        const number = "2348133413510"; 
+                        whatsappLink.href = `https://wa.me/${number}?text=${message}`;
+
+                        // Optional: Scroll to success message
+                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    } catch (error) {
+                        console.error('Submission Error:', error);
+                        alert('There was a problem sending your message. Please try again.');
+                    } finally {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // --- Handle URL Params (Fallback/Legacy) ---
             const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
             const isSuccess = urlParams.get('success') === 'true';
             const whatsappNumber = urlParams.get('whatsapp');
@@ -545,11 +632,16 @@
             const ctx = canvas.getContext('2d');
             let width, height;
             let particles = [];
+            let circuits = [];
+            
+            // Fix for mobile stability: Only reset if WIDTH changes significantly
+            let lastWidth = window.innerWidth;
 
             // Configuration (INCREASED FOR VISIBILITY)
             const particleCount = 80; // Increased count
             const connectionDistance = 180; // Increased range
-            const speed = 0.5;
+            const speed = 0.8; // Increased speed (was 0.5)
+            const circuitCount = 8; // Number of circuit lines
 
             function resize() {
                 width = canvas.width = window.innerWidth;
@@ -563,6 +655,11 @@
                     this.vx = (Math.random() - 0.5) * speed;
                     this.vy = (Math.random() - 0.5) * speed;
                     this.size = Math.random() * 3 + 1.5; // Increased size range
+                    // Add subtle pulsing glow
+                    this.baseAlpha = 0.2 + Math.random() * 0.4;
+                    this.alpha = this.baseAlpha;
+                    this.pulseSpeed = 0.02 + Math.random() * 0.03;
+                    this.pulseDir = 1;
                 }
                 update() {
                     this.x += this.vx;
@@ -570,12 +667,75 @@
                     // Bounce off edges
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                    // Pulse alpha
+                    this.alpha += this.pulseSpeed * this.pulseDir;
+                    if (this.alpha > this.baseAlpha + 0.2) this.pulseDir = -1;
+                    if (this.alpha < this.baseAlpha - 0.1) this.pulseDir = 1;
                 }
                 draw() {
-                    ctx.fillStyle = 'rgba(11, 79, 108, 0.4)'; // Increased opacity
+                    ctx.fillStyle = `rgba(100, 181, 246, ${this.alpha})`; // Light blue/electric
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
+                }
+            }
+
+            // New Circuit Line Class
+            class Circuit {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.length = 100 + Math.random() * 300;
+                    this.angle = [0, Math.PI/2, Math.PI, 3*Math.PI/2][Math.floor(Math.random() * 4)]; // Right angles only
+                    this.speed = 1 + Math.random() * 2;
+                    this.segments = [];
+                    this.currentLength = 0;
+                    this.alpha = 0;
+                    this.state = 'growing'; // growing, pausing, fading
+                    this.timer = 0;
+                }
+                update() {
+                    if (this.state === 'growing') {
+                        this.currentLength += this.speed;
+                        if (this.currentLength >= this.length) {
+                            this.state = 'pausing';
+                            this.timer = 50 + Math.random() * 50;
+                        }
+                        this.alpha = Math.min(1, this.currentLength / (this.length * 0.2)); // Fade in
+                    } else if (this.state === 'pausing') {
+                        this.timer--;
+                        if (this.timer <= 0) this.state = 'fading';
+                    } else if (this.state === 'fading') {
+                        this.alpha -= 0.02;
+                        if (this.alpha <= 0) this.reset();
+                    }
+
+                    // Build segments for right-angle turns
+                    if (this.state === 'growing') {
+                        if (Math.random() < 0.02 && this.currentLength > 20) {
+                            // Turn 90 degrees
+                            this.angle += (Math.random() < 0.5 ? Math.PI/2 : -Math.PI/2);
+                        }
+                    }
+                }
+                draw() {
+                    if (this.alpha <= 0) return;
+                    ctx.strokeStyle = `rgba(79, 195, 247, ${this.alpha * 0.5})`; // Electric cyan
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    let curX = this.x, curY = this.y;
+                    ctx.moveTo(curX, curY);
+                    
+                    let remaining = this.currentLength;
+                    // Simple drawing for now, a straight line that turns
+                    curX += Math.cos(this.angle) * remaining;
+                    curY += Math.sin(this.angle) * remaining;
+                    ctx.lineTo(curX, curY);
+                    ctx.stroke();
                 }
             }
 
@@ -584,11 +744,19 @@
                 for (let i = 0; i < particleCount; i++) {
                     particles.push(new Particle());
                 }
+                // Init circuits
+                circuits = [];
+                for (let i = 0; i < circuitCount; i++) {
+                    circuits.push(new Circuit());
+                }
             }
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
                 
+                // Update and draw circuits first (background layer)
+                circuits.forEach(c => { c.update(); c.draw(); });
+
                 // Update and draw particles
                 particles.forEach((p, index) => {
                     p.update();
@@ -603,7 +771,7 @@
 
                         if (distance < connectionDistance) {
                             // Increased opacity calculation for lines
-                            ctx.strokeStyle = `rgba(11, 79, 108, ${0.3 - distance/connectionDistance * 0.3})`;
+                            ctx.strokeStyle = `rgba(100, 181, 246, ${0.2 - distance/connectionDistance * 0.2})`;
                             ctx.lineWidth = 1;
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
@@ -616,8 +784,12 @@
             }
 
             window.addEventListener('resize', () => {
-                resize();
-                initParticles();
+                // Mobile check: only resize if width changes (ignores toolbar height changes)
+                if (window.innerWidth !== lastWidth) {
+                    lastWidth = window.innerWidth;
+                    resize();
+                    initParticles();
+                }
             });
 
             resize();
